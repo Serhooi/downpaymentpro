@@ -30,9 +30,10 @@ export const sendBookingEmail = createServerFn({ method: "POST" })
 
     // 2. Try to send the email notification.
     try {
-      const mod: any = await import(
-        /* @vite-ignore */ "@/lib/email-templates/send-email"
-      ).catch(() => null);
+      const modulePath = "@/lib/email-templates/send-email";
+      const mod: any = await import(/* @vite-ignore */ modulePath).catch(
+        () => null,
+      );
       if (mod?.sendTemplateEmail) {
         const result = await mod.sendTemplateEmail(
           "booking-request",
