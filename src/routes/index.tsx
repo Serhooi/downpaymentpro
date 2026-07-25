@@ -74,7 +74,7 @@ function Index() {
         toast.success("Thanks! We'll be in touch shortly.");
         setForm({ name: "", email: "", phone: "", bestTime: "", message: "" });
       } else {
-        toast.error(res?.error || "Something went wrong. Please try again.");
+        toast.error("Something went wrong. Please try again.");
       }
     } catch (err) {
       toast.error("Something went wrong. Please try again.");
