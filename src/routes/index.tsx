@@ -1,9 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import { Toaster } from "sonner";
 import { sendBookingEmail } from "@/lib/booking.functions";
+import { Reveal } from "@/components/Reveal";
+import { ReadinessQuiz } from "@/components/ReadinessQuiz";
+import { LeadMagnet } from "@/components/LeadMagnet";
+import { Testimonials } from "@/components/Testimonials";
 
 export const Route = createFileRoute("/")({
   head: () => ({
