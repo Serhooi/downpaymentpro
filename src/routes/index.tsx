@@ -116,6 +116,8 @@ function Index() {
             <a href="#pillars">Program</a>
             <a href="#calculator">Calculator</a>
             <a href="#score">Score</a>
+            <a href="#stories">Stories</a>
+            <a href="#guide">Free guide</a>
             <a href="#faq">FAQ</a>
           </div>
           <a href="#book" className="btn green">Book a Session</a>
