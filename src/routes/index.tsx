@@ -1,9 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import { Toaster } from "sonner";
 import { sendBookingEmail } from "@/lib/booking.functions";
+import { Reveal } from "@/components/Reveal";
+import { ReadinessQuiz } from "@/components/ReadinessQuiz";
+import { LeadMagnet } from "@/components/LeadMagnet";
+import { Testimonials } from "@/components/Testimonials";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -40,6 +44,13 @@ function Index() {
   const [price, setPrice] = useState(800000);
   const [savings, setSavings] = useState(45000);
   const [monthly, setMonthly] = useState(2500);
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+  const [lightsOn, setLightsOn] = useState(false);
+
+  useEffect(() => {
+    const t = setTimeout(() => setLightsOn(true), 1400);
+    return () => clearTimeout(t);
+  }, []);
 
   const { target, timeline, heroYears } = useMemo(() => {
     const t = price < 500000 ? price * 0.05 : 25000 + (price - 500000) * 0.1;
@@ -105,6 +116,8 @@ function Index() {
             <a href="#pillars">Program</a>
             <a href="#calculator">Calculator</a>
             <a href="#score">Score</a>
+            <a href="#stories">Stories</a>
+            <a href="#guide">Free guide</a>
             <a href="#faq">FAQ</a>
           </div>
           <a href="#book" className="btn green">Book a Session</a>
@@ -130,15 +143,33 @@ function Index() {
               <div className="point"><span className="icon">🏛</span>FHSA & RRSP guidance</div>
             </div>
           </div>
-          <div className="visual">
-            <div className="sun" />
+          <div
+            className={`visual ${lightsOn ? "lit" : ""}`}
+            onMouseMove={(e) => {
+              const r = e.currentTarget.getBoundingClientRect();
+              setTilt({
+                x: ((e.clientX - r.left) / r.width - 0.5) * 2,
+                y: ((e.clientY - r.top) / r.height - 0.5) * 2,
+              });
+            }}
+            onMouseLeave={() => setTilt({ x: 0, y: 0 })}
+          >
+            <div className="sun" style={{ transform: `translate(${tilt.x * -16}px, ${tilt.y * -10}px)` }} />
             <div className="lawn" />
             <div className="road" />
-            <svg className="house" viewBox="0 0 520 330">
+            <svg
+              className="house"
+              viewBox="0 0 520 330"
+              style={{ transform: `translate(${tilt.x * 14}px, ${tilt.y * 9}px) rotate(${tilt.x * 1.1}deg)` }}
+              onClick={() => setLightsOn((v) => !v)}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => e.key === "Enter" && setLightsOn((v) => !v)}
+            >
               <path d="M60 160 L260 20 L460 160" fill="#0b2b68" />
               <path d="M100 155 H420 V315 H100 Z" fill="#fff" stroke="#d9e1ee" strokeWidth="4" />
               <path d="M145 190 H225 V315 H145 Z" fill="#0b2b68" />
-              <path d="M285 190 H370 V250 H285 Z" fill="#dceeff" stroke="#0b2b68" strokeWidth="6" />
+              <rect className="win" x="285" y="190" width="85" height="60" fill={lightsOn ? "#ffd977" : "#dceeff"} stroke="#0b2b68" strokeWidth="6" />
               <path d="M100 155 L260 45 L420 155" fill="none" stroke="#367f23" strokeWidth="12" />
               <circle cx="205" cy="255" r="6" fill="#fff" />
             </svg>
@@ -147,6 +178,7 @@ function Index() {
               <b>{heroYears}</b>
               <span>Estimated with your custom savings plan.</span>
             </div>
+            <span className="hint">{lightsOn ? "Home sweet home ✨" : "Tap the house →"}</span>
           </div>
         </section>
 
@@ -172,12 +204,12 @@ function Index() {
                 ["2", "Review & analyze", "We review your available programs, savings options, and planning gaps."],
                 ["3", "Build your roadmap", "You receive a personalized plan designed to grow your down payment."],
                 ["4", "Monitor & adjust", "We monitor your progress for 90 days and adjust the plan as needed."],
-              ].map(([n, h, p]) => (
-                <article className="step" key={n}>
+              ].map(([n, h, p], i) => (
+                <Reveal as="article" className="step" key={n} delay={i * 80}>
                   <span className="step-no">{n}</span>
                   <h3>{h}</h3>
                   <p>{p}</p>
-                </article>
+                </Reveal>
               ))}
             </div>
           </div>
@@ -196,11 +228,11 @@ function Index() {
                 ["Programs", "Learn FHSA, HBP, and government options."],
                 ["RRSP Strategy", "Use RRSP planning to support your goal."],
                 ["90 Days", "Track progress and stay accountable."],
-              ].map(([h, p]) => (
-                <article className="pillar" key={h}>
+              ].map(([h, p], i) => (
+                <Reveal as="article" className="pillar" key={h} delay={i * 60}>
                   <h3>{h}</h3>
                   <p>{p}</p>
-                </article>
+                </Reveal>
               ))}
             </div>
           </div>
@@ -232,31 +264,42 @@ function Index() {
         </section>
 
         <section className="section dark" id="score">
-          <div className="wrap split">
-            <div className="score">
-              <div className="ring"><b>78</b></div>
-              <h3>Down Payment Readiness Score</h3>
-              <p>A simple way to understand how prepared you are and what steps can improve your timeline.</p>
-            </div>
-            <div>
+          <div className="wrap center">
+            <Reveal>
               <p className="eyebrow">Signature feature</p>
               <h2>Your roadmap starts with a score.</h2>
-              <ul className="check">
-                <li>Identify savings gaps</li>
-                <li>Review FHSA and RRSP opportunities</li>
-                <li>Estimate your buying timeline</li>
-                <li>Get clear next steps</li>
-              </ul>
-            </div>
+              <p className="sub">
+                Answer six quick questions and get your personal Down Payment Readiness
+                Score plus a checklist of the exact next steps for your situation.
+              </p>
+            </Reveal>
+            <Reveal delay={120}>
+              <ReadinessQuiz />
+            </Reveal>
           </div>
         </section>
 
-        <section className="section">
-          <div className="wrap quote">
-            <h2>"We thought buying a home would take six years. With a plan, we saw a path to three."</h2>
-            <p className="sub">Replace this section later with real client stories and photos.</p>
+        <section className="section" id="stories">
+          <div className="wrap center">
+            <Reveal>
+              <p className="eyebrow">Real clients</p>
+              <h2>From "someday" to keys in hand.</h2>
+              <p className="sub">
+                Every plan is different — these are the shifts our clients made across Ontario.
+              </p>
+            </Reveal>
+            <Testimonials />
           </div>
         </section>
+
+        <section className="section soft" id="guide">
+          <div className="wrap">
+            <Reveal>
+              <LeadMagnet />
+            </Reveal>
+          </div>
+        </section>
+
 
         <section className="section soft" id="faq">
           <div className="wrap center">
@@ -411,4 +454,70 @@ nav{height:78px;display:flex;align-items:center;gap:28px}
 .footer .wrap{display:flex;justify-content:space-between;gap:20px}
 @media(max-width:980px){.links{display:none}.hero,.split,.book{grid-template-columns:1fr}.visual{height:520px}.steps{grid-template-columns:1fr 1fr}.pillars{grid-template-columns:1fr 1fr}.points{grid-template-columns:1fr}}
 @media(max-width:560px){.hero h1{font-size:58px}.steps,.pillars,.results{grid-template-columns:1fr}.footer .wrap{display:grid}}
+
+/* --- reveal on scroll --- */
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+.reveal.is-in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}}
+/* --- micro interactions --- */
+.step,.pillar,.story{transition:transform .35s cubic-bezier(.22,1,.36,1),box-shadow .35s,border-color .35s}
+.step:hover,.pillar:hover,.story:hover{transform:translateY(-8px);box-shadow:0 26px 60px rgba(7,27,77,.14);border-color:#cfe0c6}
+.btn{transition:transform .25s cubic-bezier(.22,1,.36,1),box-shadow .25s,filter .25s}
+.btn:hover{transform:translateY(-2px);box-shadow:0 18px 40px rgba(7,27,77,.26)}
+.links a{position:relative}
+.links a:after{content:"";position:absolute;left:0;right:100%;bottom:-6px;height:2px;background:var(--green);transition:right .3s}
+.links a:hover:after{right:0}
+/* --- interactive hero house --- */
+.house{cursor:pointer;transition:transform .35s cubic-bezier(.22,1,.36,1)}
+.sun{transition:transform .5s ease-out}
+.win{transition:fill .5s ease}
+.visual.lit .win{filter:drop-shadow(0 0 18px rgba(255,205,90,.85))}
+.hint{position:absolute;right:26px;top:24px;background:rgba(255,255,255,.85);backdrop-filter:blur(8px);border-radius:999px;padding:8px 16px;font-size:12px;font-weight:850;color:var(--navy)}
+/* --- readiness quiz --- */
+.quiz{display:grid;grid-template-columns:1fr 1fr;gap:26px;margin-top:52px;text-align:left}
+.quiz-form,.quiz-result{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);border-radius:30px;padding:30px;color:white}
+.quiz-form label{display:flex;justify-content:space-between;font-weight:850;margin:16px 0 10px;font-size:14px}
+.quiz-form input[type=range]{width:100%;accent-color:#7ed957}
+.quiz-label{display:block;font-weight:850;margin:22px 0 12px;font-size:14px}
+.chips{display:flex;flex-wrap:wrap;gap:10px}
+.chip{border:1px solid rgba(255,255,255,.28);background:transparent;color:white;border-radius:999px;padding:10px 16px;font:inherit;font-size:13px;font-weight:800;cursor:pointer;transition:all .25s}
+.chip:hover{border-color:#7ed957}
+.chip.on{background:var(--green);border-color:var(--green)}
+.quiz-result{text-align:center}
+.ring.live{width:200px;height:200px;background:conic-gradient(#54a83f var(--pct),rgba(255,255,255,.18) 0);transition:background .5s ease}
+.ring.live b{font-size:66px}
+.quiz-result h3{margin:18px 0 6px;font-size:22px}
+.live-check{text-align:left;line-height:1.55;display:grid;gap:10px;margin:18px 0 22px}
+.live-check li{font-size:14px}
+.live-check li:before{content:"○";color:#ffd977}
+.live-check li.ok:before{content:"✓";color:#91e47a}
+.quiz-email{display:flex;gap:10px;flex-wrap:wrap}
+.quiz-email input{flex:1 1 180px;border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.08);color:white;border-radius:14px;padding:14px;font:inherit}
+.quiz-email input::placeholder{color:#c6d2e8}
+.quiz-sent{color:#91e47a;font-weight:850}
+/* --- stories --- */
+.stories{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:52px;text-align:left}
+.story{background:white;border:1px solid var(--line);border-radius:30px;padding:30px;box-shadow:0 14px 40px rgba(7,27,77,.06)}
+.story-head{display:flex;gap:14px;align-items:center}
+.avatar{width:52px;height:52px;border-radius:50%;display:grid;place-items:center;background:#edf7ea;color:var(--green);font-weight:900;font-size:14px}
+.story-head b{display:block;letter-spacing:-.02em}
+.story-head small{color:var(--muted);font-weight:700}
+.story-shift{display:flex;align-items:center;gap:12px;margin:22px 0}
+.was{color:var(--muted);text-decoration:line-through;font-weight:850}
+.arrow{color:var(--green);font-weight:900}
+.now{color:var(--navy);font-weight:900;font-size:24px;letter-spacing:-.03em}
+.story p{color:#344360;line-height:1.65;margin:0 0 18px}
+.story-stat{display:inline-block;background:#edf7ea;color:#2c6a1c;border-radius:999px;padding:8px 14px;font-size:12px;font-weight:900}
+/* --- lead magnet --- */
+.magnet{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center}
+.magnet h2{font-size:clamp(34px,4vw,60px);line-height:1;letter-spacing:-.05em;margin:0 0 16px}
+.dark-check{color:#344360;list-style:none;padding:0;line-height:2}
+.dark-check li:before{content:"✓";color:var(--green);font-weight:900;margin-right:10px}
+.magnet-form{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.magnet-form input{flex:1 1 190px;border:1px solid #dce3ee;border-radius:14px;padding:15px;font:inherit;background:white}
+.magnet-done{display:flex;gap:16px;align-items:center;flex-wrap:wrap;margin-top:26px;font-weight:800;color:var(--muted)}
+.magnet-cover{display:block;border-radius:28px;overflow:hidden;box-shadow:var(--shadow);transition:transform .4s cubic-bezier(.22,1,.36,1)}
+.magnet-cover:hover{transform:translateY(-8px) rotate(-1deg)}
+.magnet-cover img{display:block;width:100%;height:auto}
+@media(max-width:980px){.quiz,.stories,.magnet{grid-template-columns:1fr}.hint{display:none}}
 `;
