@@ -134,15 +134,33 @@ function Index() {
               <div className="point"><span className="icon">🏛</span>FHSA & RRSP guidance</div>
             </div>
           </div>
-          <div className="visual">
-            <div className="sun" />
+          <div
+            className={`visual ${lightsOn ? "lit" : ""}`}
+            onMouseMove={(e) => {
+              const r = e.currentTarget.getBoundingClientRect();
+              setTilt({
+                x: ((e.clientX - r.left) / r.width - 0.5) * 2,
+                y: ((e.clientY - r.top) / r.height - 0.5) * 2,
+              });
+            }}
+            onMouseLeave={() => setTilt({ x: 0, y: 0 })}
+          >
+            <div className="sun" style={{ transform: `translate(${tilt.x * -16}px, ${tilt.y * -10}px)` }} />
             <div className="lawn" />
             <div className="road" />
-            <svg className="house" viewBox="0 0 520 330">
+            <svg
+              className="house"
+              viewBox="0 0 520 330"
+              style={{ transform: `translate(${tilt.x * 14}px, ${tilt.y * 9}px) rotate(${tilt.x * 1.1}deg)` }}
+              onClick={() => setLightsOn((v) => !v)}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => e.key === "Enter" && setLightsOn((v) => !v)}
+            >
               <path d="M60 160 L260 20 L460 160" fill="#0b2b68" />
               <path d="M100 155 H420 V315 H100 Z" fill="#fff" stroke="#d9e1ee" strokeWidth="4" />
               <path d="M145 190 H225 V315 H145 Z" fill="#0b2b68" />
-              <path d="M285 190 H370 V250 H285 Z" fill="#dceeff" stroke="#0b2b68" strokeWidth="6" />
+              <rect className="win" x="285" y="190" width="85" height="60" fill={lightsOn ? "#ffd977" : "#dceeff"} stroke="#0b2b68" strokeWidth="6" />
               <path d="M100 155 L260 45 L420 155" fill="none" stroke="#367f23" strokeWidth="12" />
               <circle cx="205" cy="255" r="6" fill="#fff" />
             </svg>
@@ -151,6 +169,7 @@ function Index() {
               <b>{heroYears}</b>
               <span>Estimated with your custom savings plan.</span>
             </div>
+            <span className="hint">{lightsOn ? "Home sweet home ✨" : "Tap the house →"}</span>
           </div>
         </section>
 
