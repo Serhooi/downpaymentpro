@@ -262,31 +262,42 @@ function Index() {
         </section>
 
         <section className="section dark" id="score">
-          <div className="wrap split">
-            <div className="score">
-              <div className="ring"><b>78</b></div>
-              <h3>Down Payment Readiness Score</h3>
-              <p>A simple way to understand how prepared you are and what steps can improve your timeline.</p>
-            </div>
-            <div>
+          <div className="wrap center">
+            <Reveal>
               <p className="eyebrow">Signature feature</p>
               <h2>Your roadmap starts with a score.</h2>
-              <ul className="check">
-                <li>Identify savings gaps</li>
-                <li>Review FHSA and RRSP opportunities</li>
-                <li>Estimate your buying timeline</li>
-                <li>Get clear next steps</li>
-              </ul>
-            </div>
+              <p className="sub">
+                Answer six quick questions and get your personal Down Payment Readiness
+                Score plus a checklist of the exact next steps for your situation.
+              </p>
+            </Reveal>
+            <Reveal delay={120}>
+              <ReadinessQuiz />
+            </Reveal>
           </div>
         </section>
 
-        <section className="section">
-          <div className="wrap quote">
-            <h2>"We thought buying a home would take six years. With a plan, we saw a path to three."</h2>
-            <p className="sub">Replace this section later with real client stories and photos.</p>
+        <section className="section" id="stories">
+          <div className="wrap center">
+            <Reveal>
+              <p className="eyebrow">Real clients</p>
+              <h2>From "someday" to keys in hand.</h2>
+              <p className="sub">
+                Every plan is different — these are the shifts our clients made across Ontario.
+              </p>
+            </Reveal>
+            <Testimonials />
           </div>
         </section>
+
+        <section className="section soft" id="guide">
+          <div className="wrap">
+            <Reveal>
+              <LeadMagnet />
+            </Reveal>
+          </div>
+        </section>
+
 
         <section className="section soft" id="faq">
           <div className="wrap center">
