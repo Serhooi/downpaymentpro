@@ -44,6 +44,13 @@ function Index() {
   const [price, setPrice] = useState(800000);
   const [savings, setSavings] = useState(45000);
   const [monthly, setMonthly] = useState(2500);
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+  const [lightsOn, setLightsOn] = useState(false);
+
+  useEffect(() => {
+    const t = setTimeout(() => setLightsOn(true), 1400);
+    return () => clearTimeout(t);
+  }, []);
 
   const { target, timeline, heroYears } = useMemo(() => {
     const t = price < 500000 ? price * 0.05 : 25000 + (price - 500000) * 0.1;
