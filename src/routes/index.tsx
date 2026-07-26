@@ -204,12 +204,12 @@ function Index() {
                 ["2", "Review & analyze", "We review your available programs, savings options, and planning gaps."],
                 ["3", "Build your roadmap", "You receive a personalized plan designed to grow your down payment."],
                 ["4", "Monitor & adjust", "We monitor your progress for 90 days and adjust the plan as needed."],
-              ].map(([n, h, p]) => (
-                <article className="step" key={n}>
+              ].map(([n, h, p], i) => (
+                <Reveal as="article" className="step" key={n} delay={i * 80}>
                   <span className="step-no">{n}</span>
                   <h3>{h}</h3>
                   <p>{p}</p>
-                </article>
+                </Reveal>
               ))}
             </div>
           </div>
@@ -228,11 +228,11 @@ function Index() {
                 ["Programs", "Learn FHSA, HBP, and government options."],
                 ["RRSP Strategy", "Use RRSP planning to support your goal."],
                 ["90 Days", "Track progress and stay accountable."],
-              ].map(([h, p]) => (
-                <article className="pillar" key={h}>
+              ].map(([h, p], i) => (
+                <Reveal as="article" className="pillar" key={h} delay={i * 60}>
                   <h3>{h}</h3>
                   <p>{p}</p>
-                </article>
+                </Reveal>
               ))}
             </div>
           </div>
