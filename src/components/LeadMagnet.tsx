@@ -20,7 +20,7 @@ export function LeadMagnet() {
     try {
       await send({ data: { email, name, source: "guide" as const } });
       setUnlocked(true);
-      toast.success("Your guide is unlocked below.");
+      toast.success("Check your inbox — the guide is on its way.");
     } catch {
       toast.error("Something went wrong. Please try again.");
     } finally {
@@ -39,17 +39,19 @@ export function LeadMagnet() {
           obligation.
         </p>
         <ul className="check dark-check">
-          <li>FHSA, HBP & land transfer rebates explained</li>
+          <li>FHSA, HBP &amp; land transfer rebates explained</li>
           <li>The 7-pillar Fast Track framework</li>
           <li>A savings plan template you can use today</li>
         </ul>
 
         {unlocked ? (
           <div className="magnet-done">
-            <a className="btn green" href={brochure.url} download="fast-track-program.png">
-              Download the guide
-            </a>
-            <span>Also sent to {email}</span>
+            <strong>Sent!</strong>
+            <span>
+              We emailed the Fast Track guide to {email} from
+              info@downpaymentpro.ca. If it isn't there in a few minutes, check
+              your spam folder.
+            </span>
           </div>
         ) : (
           <form className="magnet-form" onSubmit={onSubmit}>
@@ -66,19 +68,27 @@ export function LeadMagnet() {
               onChange={(e) => setEmail(e.target.value)}
             />
             <button className="btn green" type="submit" disabled={busy}>
-              {busy ? "Sending..." : "Get the free guide"}
+              {busy ? "Sending..." : "Email me the free guide"}
             </button>
           </form>
         )}
+        <p className="magnet-note">
+          We email the guide straight to you — no spam, unsubscribe anytime.
+        </p>
       </div>
 
-      <a className="magnet-cover" href={brochure.url} target="_blank" rel="noreferrer">
-        <img
-          src={brochure.url}
-          alt="Fast Track Program guide for Ontario first-time home buyers"
-          loading="lazy"
-        />
-      </a>
+      <div className="magnet-cover magnet-locked" aria-hidden="true">
+        <div className="magnet-locked-inner">
+          <span className="magnet-badge">Fast Track Program</span>
+          <h3>Your free guide</h3>
+          <p>Delivered to your inbox in one click.</p>
+          <ul>
+            <li>FHSA &amp; HBP breakdown</li>
+            <li>7 pillars framework</li>
+            <li>Savings plan template</li>
+          </ul>
+        </div>
+      </div>
     </div>
   );
 }
