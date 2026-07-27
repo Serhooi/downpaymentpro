@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { toast } from "sonner";
 import { saveLead } from "@/lib/leads.functions";
-import brochure from "@/assets/fast-track-brochure.png.asset.json";
 
 export function LeadMagnet() {
   const send = useServerFn(saveLead);
