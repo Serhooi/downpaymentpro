@@ -515,9 +515,18 @@ nav{height:78px;display:flex;align-items:center;gap:28px}
 .dark-check li:before{content:"✓";color:var(--green);font-weight:900;margin-right:10px}
 .magnet-form{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
 .magnet-form input{flex:1 1 190px;border:1px solid #dce3ee;border-radius:14px;padding:15px;font:inherit;background:white}
-.magnet-done{display:flex;gap:16px;align-items:center;flex-wrap:wrap;margin-top:26px;font-weight:800;color:var(--muted)}
+.magnet-done{display:flex;flex-direction:column;gap:6px;margin-top:26px;color:var(--muted);background:#f2f8f4;border:1px solid #d6e9dd;border-radius:16px;padding:16px 18px}
+.magnet-done strong{color:var(--green);font-size:18px}
+.magnet-note{margin-top:14px;font-size:13px;color:var(--muted);opacity:.85}
 .magnet-cover{display:block;border-radius:28px;overflow:hidden;box-shadow:var(--shadow);transition:transform .4s cubic-bezier(.22,1,.36,1)}
 .magnet-cover:hover{transform:translateY(-8px) rotate(-1deg)}
-.magnet-cover img{display:block;width:100%;height:auto}
+.magnet-locked{background:linear-gradient(160deg,var(--navy),#16305a);color:#fff;padding:38px 34px;display:flex;align-items:center}
+.magnet-locked-inner{width:100%}
+.magnet-badge{display:inline-block;font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:800;color:var(--green);background:rgba(255,255,255,.08);border-radius:999px;padding:7px 14px}
+.magnet-locked h3{margin:18px 0 8px;font-size:30px;line-height:1.15;color:#fff}
+.magnet-locked p{margin:0 0 18px;opacity:.8}
+.magnet-locked ul{list-style:none;padding:0;margin:0;display:grid;gap:10px}
+.magnet-locked li{padding-left:26px;position:relative;opacity:.92}
+.magnet-locked li:before{content:"";position:absolute;left:0;top:7px;width:12px;height:12px;border-radius:50%;background:var(--green)}
 @media(max-width:980px){.quiz,.stories,.magnet{grid-template-columns:1fr}.hint{display:none}}
 `;
