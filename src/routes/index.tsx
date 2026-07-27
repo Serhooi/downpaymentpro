@@ -154,31 +154,53 @@ function Index() {
             }}
             onMouseLeave={() => setTilt({ x: 0, y: 0 })}
           >
-            <div className="sun" style={{ transform: `translate(${tilt.x * -16}px, ${tilt.y * -10}px)` }} />
-            <div className="lawn" />
-            <div className="road" />
-            <svg
-              className="house"
-              viewBox="0 0 520 330"
-              style={{ transform: `translate(${tilt.x * 14}px, ${tilt.y * 9}px) rotate(${tilt.x * 1.1}deg)` }}
-              onClick={() => setLightsOn((v) => !v)}
-              role="button"
-              tabIndex={0}
-              onKeyDown={(e) => e.key === "Enter" && setLightsOn((v) => !v)}
-            >
-              <path d="M60 160 L260 20 L460 160" fill="#0b2b68" />
-              <path d="M100 155 H420 V315 H100 Z" fill="#fff" stroke="#d9e1ee" strokeWidth="4" />
-              <path d="M145 190 H225 V315 H145 Z" fill="#0b2b68" />
-              <rect className="win" x="285" y="190" width="85" height="60" fill={lightsOn ? "#ffd977" : "#dceeff"} stroke="#0b2b68" strokeWidth="6" />
-              <path d="M100 155 L260 45 L420 155" fill="none" stroke="#367f23" strokeWidth="12" />
-              <circle cx="205" cy="255" r="6" fill="#fff" />
-            </svg>
-            <div className="card">
-              <span>Down payment timeline</span>
-              <b>{heroYears}</b>
-              <span>Estimated with your custom savings plan.</span>
+            <div className="glow" style={{ transform: `translate(${tilt.x * -18}px, ${tilt.y * -12}px)` }} />
+            <div className="hills" />
+            <div className="ground" />
+            <div className="house-wrap">
+              <svg
+                className="house"
+                viewBox="0 0 460 320"
+                style={{ transform: `translate(${tilt.x * 10}px, ${tilt.y * 6}px) rotate(${tilt.x * 0.6}deg)` }}
+                onClick={() => setLightsOn((v) => !v)}
+                role="button"
+                aria-label="Toggle house lights"
+                tabIndex={0}
+                onKeyDown={(e) => e.key === "Enter" && setLightsOn((v) => !v)}
+              >
+                <ellipse cx="230" cy="292" rx="150" ry="16" fill="rgba(7,27,77,.10)" />
+                <rect x="330" y="70" width="26" height="60" rx="6" fill="#0b2b68" />
+                <path d="M230 32 L406 168 H54 Z" fill="#0b2b68" />
+                <path d="M230 52 L386 172" fill="none" stroke="#367f23" strokeWidth="11" strokeLinecap="round" />
+                <path d="M230 52 L74 172" fill="none" stroke="#367f23" strokeWidth="11" strokeLinecap="round" />
+                <rect x="88" y="166" width="284" height="120" rx="10" fill="#ffffff" stroke="#e2e9f3" strokeWidth="3" />
+                <rect x="128" y="200" width="56" height="86" rx="8" fill="#0b2b68" />
+                <circle cx="173" cy="245" r="4.5" fill="#f5c45e" />
+                <rect className="win" x="228" y="200" width="52" height="46" rx="7" fill={lightsOn ? "#ffd977" : "#e6f0fb"} stroke="#0b2b68" strokeWidth="5" />
+                <rect className="win" x="298" y="200" width="52" height="46" rx="7" fill={lightsOn ? "#ffd977" : "#e6f0fb"} stroke="#0b2b68" strokeWidth="5" />
+                <rect x="216" y="132" width="28" height="24" rx="5" fill="#f6f9fd" stroke="#0b2b68" strokeWidth="5" />
+              </svg>
             </div>
-            <span className="hint">{lightsOn ? "Home sweet home ✨" : "Tap the house →"}</span>
+
+            <div className="hero-panel">
+              <div className="hp-top">
+                <span className="hp-label">Down payment timeline</span>
+                <span className="hp-tag">Live estimate</span>
+              </div>
+              <b>{heroYears}</b>
+              <div className="hp-bar">
+                <i style={{ width: `${Math.max(8, Math.min(100, 100 - parseFloat(heroYears) * 14 || 70))}%` }} />
+              </div>
+              <span className="hp-note">Based on your custom savings plan below.</span>
+            </div>
+
+            <button
+              type="button"
+              className="hint"
+              onClick={() => setLightsOn((v) => !v)}
+            >
+              {lightsOn ? "Home sweet home ✨" : "Tap the house →"}
+            </button>
           </div>
         </section>
 
