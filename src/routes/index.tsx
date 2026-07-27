@@ -178,7 +178,7 @@ function Index() {
                 <circle cx="173" cy="245" r="4.5" fill="#f5c45e" />
                 <rect className="win" x="228" y="200" width="52" height="46" rx="7" fill={lightsOn ? "#ffd977" : "#e6f0fb"} stroke="#0b2b68" strokeWidth="5" />
                 <rect className="win" x="298" y="200" width="52" height="46" rx="7" fill={lightsOn ? "#ffd977" : "#e6f0fb"} stroke="#0b2b68" strokeWidth="5" />
-                <rect x="216" y="132" width="28" height="24" rx="5" fill="#f6f9fd" stroke="#0b2b68" strokeWidth="5" />
+                <circle className="win" cx="230" cy="128" r="16" fill={lightsOn ? "#ffd977" : "#eaf2fb"} stroke="#f6f9fd" strokeWidth="5" />
               </svg>
             </div>
 
