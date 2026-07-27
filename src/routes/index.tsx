@@ -497,10 +497,10 @@ nav{height:78px;display:flex;align-items:center;gap:28px}
 .links a:hover:after{right:0}
 /* --- interactive hero house --- */
 .house{cursor:pointer;transition:transform .35s cubic-bezier(.22,1,.36,1)}
-.sun{transition:transform .5s ease-out}
 .win{transition:fill .5s ease}
-.visual.lit .win{filter:drop-shadow(0 0 18px rgba(255,205,90,.85))}
-.hint{position:absolute;right:26px;top:24px;background:rgba(255,255,255,.85);backdrop-filter:blur(8px);border-radius:999px;padding:8px 16px;font-size:12px;font-weight:850;color:var(--navy)}
+.visual.lit .win{filter:drop-shadow(0 0 16px rgba(255,205,90,.9))}
+.hint{position:absolute;right:24px;top:22px;z-index:3;border:1px solid rgba(255,255,255,.9);background:rgba(255,255,255,.85);backdrop-filter:blur(8px);border-radius:999px;padding:9px 16px;font:inherit;font-size:12px;font-weight:850;color:var(--navy);cursor:pointer;box-shadow:0 8px 24px rgba(7,27,77,.10);transition:transform .25s ease}
+.hint:hover{transform:translateY(-2px)}
 /* --- readiness quiz --- */
 .quiz{display:grid;grid-template-columns:1fr 1fr;gap:26px;margin-top:52px;text-align:left}
 .quiz-form,.quiz-result{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);border-radius:30px;padding:30px;color:white}
