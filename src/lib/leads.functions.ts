@@ -31,6 +31,7 @@ export const saveLead = createServerFn({ method: "POST" })
         () => null,
       );
       if (mod?.sendTemplateEmail) {
+        // 1) Notify the team that a lead requested the guide
         await mod.sendTemplateEmail("booking-request", "info@downpaymentpro.ca", {
           templateData: {
             name: data.name || "New lead",
@@ -38,10 +39,19 @@ export const saveLead = createServerFn({ method: "POST" })
             message:
               data.source === "score"
                 ? `Readiness score: ${data.score ?? "n/a"}/100`
-                : "Downloaded the free Ontario first-home guide.",
+                : "Requested the free Ontario first-home guide (PDF sent).",
           },
           replyTo: data.email,
         });
+
+        // 2) Send the guide itself to the lead, from info@downpaymentpro.ca
+        if (data.source === "guide") {
+          await mod.sendTemplateEmail("guide-delivery", data.email, {
+            templateData: { name: data.name || "there" },
+            replyTo: "info@downpaymentpro.ca",
+            idempotencyKey: `guide-${data.email}`,
+          });
+        }
       }
     } catch (err) {
       console.error("[saveLead] email send failed", err);
