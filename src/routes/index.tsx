@@ -154,31 +154,53 @@ function Index() {
             }}
             onMouseLeave={() => setTilt({ x: 0, y: 0 })}
           >
-            <div className="sun" style={{ transform: `translate(${tilt.x * -16}px, ${tilt.y * -10}px)` }} />
-            <div className="lawn" />
-            <div className="road" />
-            <svg
-              className="house"
-              viewBox="0 0 520 330"
-              style={{ transform: `translate(${tilt.x * 14}px, ${tilt.y * 9}px) rotate(${tilt.x * 1.1}deg)` }}
-              onClick={() => setLightsOn((v) => !v)}
-              role="button"
-              tabIndex={0}
-              onKeyDown={(e) => e.key === "Enter" && setLightsOn((v) => !v)}
-            >
-              <path d="M60 160 L260 20 L460 160" fill="#0b2b68" />
-              <path d="M100 155 H420 V315 H100 Z" fill="#fff" stroke="#d9e1ee" strokeWidth="4" />
-              <path d="M145 190 H225 V315 H145 Z" fill="#0b2b68" />
-              <rect className="win" x="285" y="190" width="85" height="60" fill={lightsOn ? "#ffd977" : "#dceeff"} stroke="#0b2b68" strokeWidth="6" />
-              <path d="M100 155 L260 45 L420 155" fill="none" stroke="#367f23" strokeWidth="12" />
-              <circle cx="205" cy="255" r="6" fill="#fff" />
-            </svg>
-            <div className="card">
-              <span>Down payment timeline</span>
-              <b>{heroYears}</b>
-              <span>Estimated with your custom savings plan.</span>
+            <div className="glow" style={{ transform: `translate(${tilt.x * -18}px, ${tilt.y * -12}px)` }} />
+            <div className="hills" />
+            <div className="ground" />
+            <div className="house-wrap">
+              <svg
+                className="house"
+                viewBox="0 0 460 320"
+                style={{ transform: `translate(${tilt.x * 10}px, ${tilt.y * 6}px) rotate(${tilt.x * 0.6}deg)` }}
+                onClick={() => setLightsOn((v) => !v)}
+                role="button"
+                aria-label="Toggle house lights"
+                tabIndex={0}
+                onKeyDown={(e) => e.key === "Enter" && setLightsOn((v) => !v)}
+              >
+                <ellipse cx="230" cy="292" rx="150" ry="16" fill="rgba(7,27,77,.10)" />
+                <rect x="330" y="70" width="26" height="60" rx="6" fill="#0b2b68" />
+                <path d="M230 32 L406 168 H54 Z" fill="#0b2b68" />
+                <path d="M230 52 L386 172" fill="none" stroke="#367f23" strokeWidth="11" strokeLinecap="round" />
+                <path d="M230 52 L74 172" fill="none" stroke="#367f23" strokeWidth="11" strokeLinecap="round" />
+                <rect x="88" y="166" width="284" height="120" rx="10" fill="#ffffff" stroke="#e2e9f3" strokeWidth="3" />
+                <rect x="128" y="200" width="56" height="86" rx="8" fill="#0b2b68" />
+                <circle cx="173" cy="245" r="4.5" fill="#f5c45e" />
+                <rect className="win" x="228" y="200" width="52" height="46" rx="7" fill={lightsOn ? "#ffd977" : "#e6f0fb"} stroke="#0b2b68" strokeWidth="5" />
+                <rect className="win" x="298" y="200" width="52" height="46" rx="7" fill={lightsOn ? "#ffd977" : "#e6f0fb"} stroke="#0b2b68" strokeWidth="5" />
+                <circle className="win" cx="230" cy="128" r="16" fill={lightsOn ? "#ffd977" : "#eaf2fb"} stroke="#f6f9fd" strokeWidth="5" />
+              </svg>
             </div>
-            <span className="hint">{lightsOn ? "Home sweet home ✨" : "Tap the house →"}</span>
+
+            <div className="hero-panel">
+              <div className="hp-top">
+                <span className="hp-label">Down payment timeline</span>
+                <span className="hp-tag">Live estimate</span>
+              </div>
+              <b>{heroYears}</b>
+              <div className="hp-bar">
+                <i style={{ width: `${Math.max(8, Math.min(100, 100 - parseFloat(heroYears) * 14 || 70))}%` }} />
+              </div>
+              <span className="hp-note">Based on your custom savings plan below.</span>
+            </div>
+
+            <button
+              type="button"
+              className="hint"
+              onClick={() => setLightsOn((v) => !v)}
+            >
+              {lightsOn ? "Home sweet home ✨" : "Tap the house →"}
+            </button>
           </div>
         </section>
 
@@ -400,14 +422,20 @@ nav{height:78px;display:flex;align-items:center;gap:28px}
 .points{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:26px}
 .point{display:flex;gap:10px;align-items:center;padding:14px;border:1px solid var(--line);border-radius:18px;background:white;font-weight:800;font-size:13px}
 .icon{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:#edf7ea;color:var(--green);font-weight:900}
-.visual{height:600px;border-radius:44px;background:linear-gradient(160deg,#f8fbff,#eef5ea);position:relative;overflow:hidden;box-shadow:var(--shadow);border:1px solid #edf1f6}
-.sun{position:absolute;width:260px;height:260px;border-radius:50%;right:-50px;top:-40px;background:radial-gradient(circle,#fff7c7,#f5c45e 45%,transparent 66%);opacity:.9}
-.house{position:absolute;left:70px;right:70px;bottom:150px;height:270px}
-.lawn{position:absolute;left:-80px;right:-80px;bottom:0;height:190px;background:linear-gradient(0deg,#85b95d,#dcefd2);border-radius:50% 50% 0 0/38% 38% 0 0}
-.road{position:absolute;left:220px;bottom:-40px;width:210px;height:260px;background:#e8e0d6;transform:skewX(-14deg);border-left:10px solid #fff;border-right:10px solid #fff}
-.card{position:absolute;left:36px;bottom:32px;width:300px;padding:24px;border-radius:28px;background:rgba(255,255,255,.82);backdrop-filter:blur(18px);box-shadow:0 20px 50px rgba(7,27,77,.16)}
-.card b{font-size:54px;display:block;color:var(--navy);letter-spacing:-.06em}
-.card span{color:var(--muted);font-weight:700}
+.visual{height:600px;border-radius:40px;background:linear-gradient(180deg,#f4f9ff 0%,#eef5fc 46%,#eaf4e6 100%);position:relative;overflow:hidden;box-shadow:var(--shadow);border:1px solid #e7eef7;display:flex;flex-direction:column;justify-content:flex-end;padding:26px}
+.glow{position:absolute;width:300px;height:300px;border-radius:50%;right:-70px;top:-90px;background:radial-gradient(circle,rgba(255,236,178,.95),rgba(245,196,94,.35) 42%,transparent 70%);transition:transform .5s ease-out;pointer-events:none}
+.hills{position:absolute;left:-10%;right:-10%;bottom:150px;height:150px;background:linear-gradient(180deg,#e7f0e2,#dcebd3);border-radius:50% 50% 0 0/100% 100% 0 0;opacity:.85}
+.ground{position:absolute;left:0;right:0;bottom:0;height:190px;background:linear-gradient(180deg,#cfe6c2,#eef6ea)}
+.house-wrap{position:absolute;left:0;right:0;top:52px;display:grid;place-items:center;pointer-events:none}
+.house{width:min(78%,380px);height:auto;pointer-events:auto}
+.hero-panel{position:relative;z-index:2;border-radius:26px;padding:22px 24px;background:rgba(255,255,255,.78);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.9);box-shadow:0 24px 60px rgba(7,27,77,.14)}
+.hp-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.hp-label{font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:850;color:var(--muted)}
+.hp-tag{font-size:11px;font-weight:850;color:var(--green);background:#eaf5e6;border-radius:999px;padding:5px 10px;white-space:nowrap}
+.hero-panel b{display:block;margin:8px 0 14px;font-size:52px;line-height:1;color:var(--navy);letter-spacing:-.05em}
+.hp-bar{height:8px;border-radius:999px;background:#e6edf6;overflow:hidden}
+.hp-bar i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--green),#7cc45a);transition:width .5s cubic-bezier(.22,1,.36,1)}
+.hp-note{display:block;margin-top:12px;font-size:13px;font-weight:700;color:var(--muted)}
 .section{padding:110px 0}
 .soft{background:var(--light)}
 .dark{background:linear-gradient(135deg,var(--navy),#092d72);color:white}
@@ -469,10 +497,10 @@ nav{height:78px;display:flex;align-items:center;gap:28px}
 .links a:hover:after{right:0}
 /* --- interactive hero house --- */
 .house{cursor:pointer;transition:transform .35s cubic-bezier(.22,1,.36,1)}
-.sun{transition:transform .5s ease-out}
 .win{transition:fill .5s ease}
-.visual.lit .win{filter:drop-shadow(0 0 18px rgba(255,205,90,.85))}
-.hint{position:absolute;right:26px;top:24px;background:rgba(255,255,255,.85);backdrop-filter:blur(8px);border-radius:999px;padding:8px 16px;font-size:12px;font-weight:850;color:var(--navy)}
+.visual.lit .win{filter:drop-shadow(0 0 16px rgba(255,205,90,.9))}
+.hint{position:absolute;right:24px;top:22px;z-index:3;border:1px solid rgba(255,255,255,.9);background:rgba(255,255,255,.85);backdrop-filter:blur(8px);border-radius:999px;padding:9px 16px;font:inherit;font-size:12px;font-weight:850;color:var(--navy);cursor:pointer;box-shadow:0 8px 24px rgba(7,27,77,.10);transition:transform .25s ease}
+.hint:hover{transform:translateY(-2px)}
 /* --- readiness quiz --- */
 .quiz{display:grid;grid-template-columns:1fr 1fr;gap:26px;margin-top:52px;text-align:left}
 .quiz-form,.quiz-result{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);border-radius:30px;padding:30px;color:white}
