@@ -203,10 +203,10 @@ function Index() {
                 <path d="M248 332 H282" stroke="rgba(11,43,104,.10)" strokeWidth="3" strokeLinecap="round" />
 
                 {/* left wing (flat roof garage volume) */}
-                <rect x="30" y="236" width="106" height="82" rx="8" fill="url(#wingG)" />
-                <rect x="22" y="226" width="122" height="14" rx="6" fill="#0b2b68" />
-                <rect x="46" y="256" width="74" height="62" rx="6" fill="#e6edf7" stroke="#cfdaea" strokeWidth="2" />
-                <path d="M54 272 H112 M54 288 H112 M54 304 H112" stroke="#cfdaea" strokeWidth="3" strokeLinecap="round" />
+                <rect x="46" y="236" width="102" height="82" rx="8" fill="url(#wingG)" />
+                <rect x="38" y="226" width="118" height="14" rx="6" fill="#0b2b68" />
+                <rect x="60" y="256" width="72" height="62" rx="6" fill="#e6edf7" stroke="#cfdaea" strokeWidth="2" />
+                <path d="M68 272 H124 M68 288 H124 M68 304 H124" stroke="#cfdaea" strokeWidth="3" strokeLinecap="round" />
 
 
                 {/* chimney */}
@@ -253,7 +253,7 @@ function Index() {
                 {/* shrubs */}
                 <circle cx="424" cy="306" r="18" fill="#4e9a37" opacity=".9" />
                 <circle cx="444" cy="312" r="12" fill="#3f8a29" opacity=".9" />
-                <circle cx="16" cy="310" r="14" fill="#4e9a37" opacity=".85" />
+                <circle cx="30" cy="310" r="14" fill="#4e9a37" opacity=".85" />
 
                 {/* slim tree */}
                 <rect x="474" y="278" width="7" height="42" rx="3" fill="#7b5a3a" />
