@@ -251,14 +251,15 @@ function Index() {
                 <path d="M262 110 V144" stroke="#0b2b68" strokeWidth="3" opacity=".5" />
 
                 {/* shrubs */}
-                <circle cx="424" cy="304" r="20" fill="#4e9a37" opacity=".9" />
-                <circle cx="446" cy="310" r="14" fill="#3f8a29" opacity=".9" />
-                <circle cx="94" cy="308" r="16" fill="#4e9a37" opacity=".85" />
+                <circle cx="424" cy="306" r="18" fill="#4e9a37" opacity=".9" />
+                <circle cx="444" cy="312" r="12" fill="#3f8a29" opacity=".9" />
+                <circle cx="16" cy="310" r="14" fill="#4e9a37" opacity=".85" />
 
                 {/* slim tree */}
-                <rect x="470" y="272" width="7" height="48" rx="3" fill="#7b5a3a" />
-                <ellipse cx="473" cy="252" rx="30" ry="38" fill="#3f8a29" opacity=".92" />
-                <ellipse cx="466" cy="238" rx="18" ry="22" fill="#57a63f" opacity=".55" />
+                <rect x="474" y="278" width="7" height="42" rx="3" fill="#7b5a3a" />
+                <ellipse cx="477" cy="258" rx="28" ry="36" fill="#3f8a29" opacity=".92" />
+                <ellipse cx="470" cy="244" rx="17" ry="21" fill="#57a63f" opacity=".5" />
+
               </svg>
 
             </div>
