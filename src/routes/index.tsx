@@ -506,8 +506,8 @@ nav{height:78px;display:flex;align-items:center;gap:28px}
 .glow{position:absolute;width:300px;height:300px;border-radius:50%;right:-70px;top:-90px;background:radial-gradient(circle,rgba(255,236,178,.95),rgba(245,196,94,.35) 42%,transparent 70%);transition:transform .5s ease-out;pointer-events:none}
 .hills{position:absolute;left:-10%;right:-10%;bottom:150px;height:150px;background:linear-gradient(180deg,#e7f0e2,#dcebd3);border-radius:50% 50% 0 0/100% 100% 0 0;opacity:.85}
 .ground{position:absolute;left:0;right:0;bottom:0;height:190px;background:linear-gradient(180deg,#cfe6c2,#eef6ea)}
-.house-wrap{position:absolute;left:0;right:0;top:52px;display:grid;place-items:center;pointer-events:none}
-.house{width:min(78%,380px);height:auto;pointer-events:auto}
+.house-wrap{position:absolute;left:0;right:0;top:44px;display:grid;place-items:center;pointer-events:none}
+.house{width:min(88%,430px);height:auto;pointer-events:auto;overflow:visible}
 .hero-panel{position:relative;z-index:2;border-radius:26px;padding:22px 24px;background:rgba(255,255,255,.78);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.9);box-shadow:0 24px 60px rgba(7,27,77,.14)}
 .hp-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
 .hp-label{font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:850;color:var(--muted)}
