@@ -576,9 +576,9 @@ nav{height:78px;display:flex;align-items:center;gap:28px}
 .links a:after{content:"";position:absolute;left:0;right:100%;bottom:-6px;height:2px;background:var(--green);transition:right .3s}
 .links a:hover:after{right:0}
 /* --- interactive hero house --- */
-.house{cursor:pointer;transition:transform .35s cubic-bezier(.22,1,.36,1)}
+.house{cursor:pointer;transition:transform .35s cubic-bezier(.22,1,.36,1);filter:drop-shadow(0 22px 34px rgba(7,27,77,.10))}
 .win{transition:fill .5s ease}
-.visual.lit .win{filter:drop-shadow(0 0 16px rgba(255,205,90,.9))}
+.visual.lit .win{filter:drop-shadow(0 0 14px rgba(255,205,90,.75))}
 .hint{position:absolute;right:24px;top:22px;z-index:3;border:1px solid rgba(255,255,255,.9);background:rgba(255,255,255,.85);backdrop-filter:blur(8px);border-radius:999px;padding:9px 16px;font:inherit;font-size:12px;font-weight:850;color:var(--navy);cursor:pointer;box-shadow:0 8px 24px rgba(7,27,77,.10);transition:transform .25s ease}
 .hint:hover{transform:translateY(-2px)}
 /* --- readiness quiz --- */
