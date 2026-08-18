@@ -160,26 +160,108 @@ function Index() {
             <div className="house-wrap">
               <svg
                 className="house"
-                viewBox="0 0 460 320"
-                style={{ transform: `translate(${tilt.x * 10}px, ${tilt.y * 6}px) rotate(${tilt.x * 0.6}deg)` }}
+                viewBox="0 0 520 360"
+                style={{ transform: `translate(${tilt.x * 10}px, ${tilt.y * 6}px) rotate(${tilt.x * 0.5}deg)` }}
                 onClick={() => setLightsOn((v) => !v)}
                 role="button"
                 aria-label="Toggle house lights"
                 tabIndex={0}
                 onKeyDown={(e) => e.key === "Enter" && setLightsOn((v) => !v)}
               >
-                <ellipse cx="230" cy="292" rx="150" ry="16" fill="rgba(7,27,77,.10)" />
-                <rect x="330" y="70" width="26" height="60" rx="6" fill="#0b2b68" />
-                <path d="M230 32 L406 168 H54 Z" fill="#0b2b68" />
-                <path d="M230 52 L386 172" fill="none" stroke="#367f23" strokeWidth="11" strokeLinecap="round" />
-                <path d="M230 52 L74 172" fill="none" stroke="#367f23" strokeWidth="11" strokeLinecap="round" />
-                <rect x="88" y="166" width="284" height="120" rx="10" fill="#ffffff" stroke="#e2e9f3" strokeWidth="3" />
-                <rect x="128" y="200" width="56" height="86" rx="8" fill="#0b2b68" />
-                <circle cx="173" cy="245" r="4.5" fill="#f5c45e" />
-                <rect className="win" x="228" y="200" width="52" height="46" rx="7" fill={lightsOn ? "#ffd977" : "#e6f0fb"} stroke="#0b2b68" strokeWidth="5" />
-                <rect className="win" x="298" y="200" width="52" height="46" rx="7" fill={lightsOn ? "#ffd977" : "#e6f0fb"} stroke="#0b2b68" strokeWidth="5" />
-                <circle className="win" cx="230" cy="128" r="16" fill={lightsOn ? "#ffd977" : "#eaf2fb"} stroke="#f6f9fd" strokeWidth="5" />
+                <defs>
+                  <linearGradient id="roofG" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0" stopColor="#123a7d" />
+                    <stop offset="1" stopColor="#07204f" />
+                  </linearGradient>
+                  <linearGradient id="wallG" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0" stopColor="#ffffff" />
+                    <stop offset="1" stopColor="#eef3fa" />
+                  </linearGradient>
+                  <linearGradient id="wingG" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0" stopColor="#f7fafd" />
+                    <stop offset="1" stopColor="#e6edf7" />
+                  </linearGradient>
+                  <linearGradient id="glassG" x1="0" y1="0" x2="0.3" y2="1">
+                    <stop offset="0" stopColor="#f3f8ff" />
+                    <stop offset="1" stopColor="#d9e7f7" />
+                  </linearGradient>
+                  <linearGradient id="litG" x1="0" y1="0" x2="0.3" y2="1">
+                    <stop offset="0" stopColor="#ffe9a8" />
+                    <stop offset="1" stopColor="#f7c65c" />
+                  </linearGradient>
+                  <linearGradient id="pathG" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0" stopColor="#e8eef0" />
+                    <stop offset="1" stopColor="#d5e0e2" />
+                  </linearGradient>
+                </defs>
+
+                {/* soft contact shadow */}
+                <ellipse cx="262" cy="322" rx="186" ry="18" fill="rgba(7,27,77,.10)" />
+
+                {/* walkway in front of the porch */}
+                <path d="M222 344 L306 344 L288 320 L242 320 Z" fill="url(#pathG)" />
+                <path d="M248 332 H282" stroke="rgba(11,43,104,.10)" strokeWidth="3" strokeLinecap="round" />
+
+                {/* left wing (flat roof garage volume) */}
+                <rect x="46" y="236" width="102" height="82" rx="8" fill="url(#wingG)" />
+                <rect x="38" y="226" width="118" height="14" rx="6" fill="#0b2b68" />
+                <rect x="60" y="256" width="72" height="62" rx="6" fill="#e6edf7" stroke="#cfdaea" strokeWidth="2" />
+                <path d="M68 272 H124 M68 288 H124 M68 304 H124" stroke="#cfdaea" strokeWidth="3" strokeLinecap="round" />
+
+
+                {/* chimney */}
+                <rect x="352" y="84" width="26" height="66" rx="4" fill="#0d2f6e" />
+                <rect x="346" y="78" width="38" height="12" rx="4" fill="#0b2b68" />
+
+                {/* main roof */}
+                <path d="M262 40 L446 186 H78 Z" fill="url(#roofG)" />
+                <path d="M262 40 L446 186 L436 196 L262 58 L88 196 L78 186 Z" fill="#08245a" opacity=".55" />
+                {/* green fascia accents */}
+                <path d="M262 62 L424 190" fill="none" stroke="#3f8a29" strokeWidth="9" strokeLinecap="round" />
+                <path d="M262 62 L100 190" fill="none" stroke="#3f8a29" strokeWidth="9" strokeLinecap="round" />
+
+                {/* main body */}
+                <rect x="112" y="184" width="300" height="134" rx="10" fill="url(#wallG)" />
+                <path
+                  d="M132 196 V318 M164 196 V318 M196 196 V318 M228 196 V318 M296 196 V318 M328 196 V318 M360 196 V318 M392 196 V318"
+                  stroke="rgba(11,43,104,.055)"
+                  strokeWidth="3"
+                />
+
+                {/* porch overhang */}
+                <rect x="222" y="222" width="86" height="9" rx="4" fill="#0b2b68" opacity=".9" />
+                <rect x="226" y="231" width="5" height="87" rx="2" fill="#0b2b68" opacity=".35" />
+                <rect x="299" y="231" width="5" height="87" rx="2" fill="#0b2b68" opacity=".35" />
+
+                {/* door */}
+                <rect x="242" y="240" width="50" height="78" rx="7" fill="#0b2b68" />
+                <rect x="252" y="252" width="30" height="26" rx="4" fill={lightsOn ? "#f7c65c" : "#20437e"} className="win" />
+                <circle cx="285" cy="284" r="3.4" fill="#e7b64d" />
+
+                {/* left window */}
+                <rect className="win" x="146" y="228" width="60" height="52" rx="6" fill={lightsOn ? "url(#litG)" : "url(#glassG)"} stroke="#0b2b68" strokeWidth="4" />
+                <path d="M176 230 V278 M148 254 H204" stroke="#0b2b68" strokeWidth="3" opacity=".85" />
+
+                {/* right window */}
+                <rect className="win" x="330" y="228" width="60" height="52" rx="6" fill={lightsOn ? "url(#litG)" : "url(#glassG)"} stroke="#0b2b68" strokeWidth="4" />
+                <path d="M360 230 V278 M332 254 H388" stroke="#0b2b68" strokeWidth="3" opacity=".85" />
+
+                {/* attic window */}
+                <path className="win" d="M262 108 a20 20 0 0 1 20 20 v16 h-40 v-16 a20 20 0 0 1 20 -20 z" fill={lightsOn ? "url(#litG)" : "#dce9f8"} stroke="#f4f8fd" strokeWidth="5" />
+                <path d="M262 110 V144" stroke="#0b2b68" strokeWidth="3" opacity=".5" />
+
+                {/* shrubs */}
+                <circle cx="424" cy="306" r="18" fill="#4e9a37" opacity=".9" />
+                <circle cx="444" cy="312" r="12" fill="#3f8a29" opacity=".9" />
+                <circle cx="30" cy="310" r="14" fill="#4e9a37" opacity=".85" />
+
+                {/* slim tree */}
+                <rect x="474" y="278" width="7" height="42" rx="3" fill="#7b5a3a" />
+                <ellipse cx="477" cy="258" rx="28" ry="36" fill="#3f8a29" opacity=".92" />
+                <ellipse cx="470" cy="244" rx="17" ry="21" fill="#57a63f" opacity=".5" />
+
               </svg>
+
             </div>
 
             <div className="hero-panel">
@@ -426,8 +508,8 @@ nav{height:78px;display:flex;align-items:center;gap:28px}
 .glow{position:absolute;width:300px;height:300px;border-radius:50%;right:-70px;top:-90px;background:radial-gradient(circle,rgba(255,236,178,.95),rgba(245,196,94,.35) 42%,transparent 70%);transition:transform .5s ease-out;pointer-events:none}
 .hills{position:absolute;left:-10%;right:-10%;bottom:150px;height:150px;background:linear-gradient(180deg,#e7f0e2,#dcebd3);border-radius:50% 50% 0 0/100% 100% 0 0;opacity:.85}
 .ground{position:absolute;left:0;right:0;bottom:0;height:190px;background:linear-gradient(180deg,#cfe6c2,#eef6ea)}
-.house-wrap{position:absolute;left:0;right:0;top:52px;display:grid;place-items:center;pointer-events:none}
-.house{width:min(78%,380px);height:auto;pointer-events:auto}
+.house-wrap{position:absolute;left:0;right:0;top:44px;display:grid;place-items:center;pointer-events:none}
+.house{width:min(88%,430px);height:auto;pointer-events:auto;overflow:visible}
 .hero-panel{position:relative;z-index:2;border-radius:26px;padding:22px 24px;background:rgba(255,255,255,.78);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.9);box-shadow:0 24px 60px rgba(7,27,77,.14)}
 .hp-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
 .hp-label{font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:850;color:var(--muted)}
@@ -496,9 +578,11 @@ nav{height:78px;display:flex;align-items:center;gap:28px}
 .links a:after{content:"";position:absolute;left:0;right:100%;bottom:-6px;height:2px;background:var(--green);transition:right .3s}
 .links a:hover:after{right:0}
 /* --- interactive hero house --- */
-.house{cursor:pointer;transition:transform .35s cubic-bezier(.22,1,.36,1)}
+.house{cursor:pointer;transition:transform .35s cubic-bezier(.22,1,.36,1);filter:drop-shadow(0 22px 34px rgba(7,27,77,.10));outline:none}
+.house:focus{outline:none}
+.house:focus-visible{outline:3px solid var(--green);outline-offset:6px;border-radius:24px}
 .win{transition:fill .5s ease}
-.visual.lit .win{filter:drop-shadow(0 0 16px rgba(255,205,90,.9))}
+.visual.lit .win{filter:drop-shadow(0 0 14px rgba(255,205,90,.75))}
 .hint{position:absolute;right:24px;top:22px;z-index:3;border:1px solid rgba(255,255,255,.9);background:rgba(255,255,255,.85);backdrop-filter:blur(8px);border-radius:999px;padding:9px 16px;font:inherit;font-size:12px;font-weight:850;color:var(--navy);cursor:pointer;box-shadow:0 8px 24px rgba(7,27,77,.10);transition:transform .25s ease}
 .hint:hover{transform:translateY(-2px)}
 /* --- readiness quiz --- */
