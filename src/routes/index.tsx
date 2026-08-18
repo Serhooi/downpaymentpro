@@ -198,15 +198,16 @@ function Index() {
                 {/* soft contact shadow */}
                 <ellipse cx="262" cy="322" rx="186" ry="18" fill="rgba(7,27,77,.10)" />
 
-                {/* walkway */}
-                <path d="M236 318 L286 318 L268 268 L250 268 Z" fill="url(#pathG)" />
-                <path d="M252 300 H270 M254 286 H268 M256 274 H266" stroke="rgba(11,43,104,.10)" strokeWidth="2.5" strokeLinecap="round" />
+                {/* walkway in front of the porch */}
+                <path d="M222 344 L306 344 L288 320 L242 320 Z" fill="url(#pathG)" />
+                <path d="M248 332 H282" stroke="rgba(11,43,104,.10)" strokeWidth="3" strokeLinecap="round" />
 
                 {/* left wing (flat roof garage volume) */}
-                <rect x="70" y="212" width="118" height="106" rx="8" fill="url(#wingG)" />
-                <rect x="62" y="202" width="134" height="16" rx="6" fill="#0b2b68" />
-                <rect x="88" y="238" width="82" height="80" rx="6" fill="#e2eaf5" stroke="#cfdaea" strokeWidth="2" />
-                <path d="M96 254 H162 M96 272 H162 M96 290 H162" stroke="#cfdaea" strokeWidth="3" strokeLinecap="round" />
+                <rect x="30" y="236" width="106" height="82" rx="8" fill="url(#wingG)" />
+                <rect x="22" y="226" width="122" height="14" rx="6" fill="#0b2b68" />
+                <rect x="46" y="256" width="74" height="62" rx="6" fill="#e6edf7" stroke="#cfdaea" strokeWidth="2" />
+                <path d="M54 272 H112 M54 288 H112 M54 304 H112" stroke="#cfdaea" strokeWidth="3" strokeLinecap="round" />
+
 
                 {/* chimney */}
                 <rect x="352" y="84" width="26" height="66" rx="4" fill="#0d2f6e" />
