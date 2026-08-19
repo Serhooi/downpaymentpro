@@ -21,13 +21,27 @@ function bookingRequestHtml(data: Record<string, any>) {
 }
 
 function guideDeliveryHtml(data: Record<string, any>) {
+  const siteUrl = process.env.VITE_SITE_URL || "https://www.downpaymentpro.com";
   return `
-    <p style="font-family:sans-serif;font-size:15px">Hi ${data.name},</p>
-    <p style="font-family:sans-serif;font-size:15px">
-      Thanks for your interest! Your free Ontario first-home guide is on its way.
-      Reply to this email if you have any questions.
-    </p>
-    <p style="font-family:sans-serif;font-size:15px">— The Downpayment Pro Team</p>
+    <div style="font-family:sans-serif;max-width:560px;margin:0 auto">
+      <p style="font-size:16px">Hi ${data.name},</p>
+      <p style="font-size:15px;color:#444">
+        Thanks for your interest in the <strong>Fast Track Program</strong>!
+        Your free guide is ready — click the button below to download it.
+      </p>
+      <div style="text-align:center;margin:32px 0">
+        <a href="${siteUrl}/fast-track-guide.pdf"
+           style="background:#1a3a6b;color:#fff;text-decoration:none;padding:14px 32px;border-radius:6px;font-size:16px;font-weight:bold;display:inline-block">
+          Download Your Free Guide (PDF)
+        </a>
+      </div>
+      <p style="font-size:14px;color:#666">
+        Have questions? Reply to this email or contact us:<br>
+        Serice Lee — (416) 786-1774<br>
+        Eric Lai — 416-725-8123
+      </p>
+      <p style="font-size:14px;color:#999">— The Downpayment Pro Team</p>
+    </div>
   `;
 }
 
