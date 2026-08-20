@@ -436,7 +436,7 @@ function Index() {
               </p>
               <div className="contact">
                 <span>☎ (416) 786-1774</span>
-                <span>✉ info@downpaymentpro.ca</span>
+                <span>✉ Downpaymentpro@gmail.com</span>
                 <span>📍 Serving families across Ontario</span>
               </div>
             </div>

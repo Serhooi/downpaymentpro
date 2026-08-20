@@ -49,7 +49,7 @@ export function LeadMagnet() {
             <strong>Sent!</strong>
             <span>
               We emailed the Fast Track guide to {email} from
-              info@downpaymentpro.ca. If it isn't there in a few minutes, check
+              Downpaymentpro@gmail.com. If it isn't there in a few minutes, check
               your spam folder.
             </span>
           </div>
