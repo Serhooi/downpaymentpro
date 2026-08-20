@@ -1,5 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
+import { sendTemplateEmail } from "@/lib/email-templates/send-email";
 
 const LeadSchema = z.object({
   email: z.string().trim().email().max(255),
@@ -26,32 +27,22 @@ export const saveLead = createServerFn({ method: "POST" })
     }
 
     try {
-      const modulePath = "@/lib/email-templates/send-email";
-      const mod: any = await import(/* @vite-ignore */ modulePath).catch(
-        () => null,
-      );
-      if (mod?.sendTemplateEmail) {
-        // 1) Notify the team that a lead requested the guide
-        await mod.sendTemplateEmail("booking-request", "", {
-          templateData: {
-            name: data.name || "New lead",
-            email: data.email,
-            message:
-              data.source === "score"
-                ? `Readiness score: ${data.score ?? "n/a"}/100`
-                : "Requested the free Ontario first-home guide (PDF sent).",
-          },
-          replyTo: data.email,
-        });
+      await sendTemplateEmail("guide-request", "", {
+        templateData: {
+          name: data.name || "New lead",
+          email: data.email,
+          message:
+            data.source === "score"
+              ? `Readiness score: ${data.score ?? "n/a"}/100`
+              : "Requested the free Ontario first-home guide.",
+        },
+        replyTo: data.email,
+      });
 
-        // 2) Send the guide itself to the lead, from info@downpaymentpro.ca
-        if (data.source === "guide") {
-          await mod.sendTemplateEmail("guide-delivery", data.email, {
-            templateData: { name: data.name || "there" },
-            replyTo: process.env.RESEND_TO_EMAIL || "Downpaymentpro@gmail.com",
-            idempotencyKey: `guide-${data.email}`,
-          });
-        }
+      if (data.source === "guide") {
+        await sendTemplateEmail("guide-delivery", data.email, {
+          templateData: { name: data.name || "there" },
+        });
       }
     } catch (err) {
       console.error("[saveLead] email send failed", err);

@@ -1,5 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
+import { sendTemplateEmail } from "@/lib/email-templates/send-email";
 
 const BookingSchema = z.object({
   name: z.string().trim().min(1).max(120),
@@ -12,7 +13,6 @@ const BookingSchema = z.object({
 export const sendBookingEmail = createServerFn({ method: "POST" })
   .inputValidator((input: unknown) => BookingSchema.parse(input))
   .handler(async ({ data }) => {
-    // 1. Persist submission so nothing is ever lost, even if email fails.
     try {
       const { supabaseAdmin } = await import(
         "@/integrations/supabase/client.server"
@@ -28,28 +28,13 @@ export const sendBookingEmail = createServerFn({ method: "POST" })
       console.error("[sendBookingEmail] db insert failed", err);
     }
 
-    // 2. Try to send the email notification.
     try {
-      const modulePath = "@/lib/email-templates/send-email";
-      const mod: any = await import(/* @vite-ignore */ modulePath).catch(
-        () => null,
-      );
-      if (mod?.sendTemplateEmail) {
-        const result = await mod.sendTemplateEmail(
-          "booking-request",
-          "info@downpaymentpro.ca",
-          {
-            templateData: data,
-            replyTo: data.email,
-          },
-        );
-        if (result && result.sent === false) {
-          console.warn("[sendBookingEmail] not sent:", result.reason);
-        }
-      } else {
-        console.warn(
-          "[sendBookingEmail] email templates not scaffolded yet — booking stored in DB only.",
-        );
+      const result = await sendTemplateEmail("booking-request", "", {
+        templateData: data,
+        replyTo: data.email,
+      });
+      if (result.sent === false) {
+        console.warn("[sendBookingEmail] not sent:", result.reason);
       }
     } catch (err) {
       console.error("[sendBookingEmail] email send failed", err);

@@ -119,6 +119,11 @@ export async function sendTemplateEmail(
     return { sent: true };
   }
 
+  if (template === "guide-request") {
+    await send(OWNER_EMAIL, `New guide request from ${templateData.email}`, ownerLeadHtml(templateData), templateData.email);
+    return { sent: true };
+  }
+
   if (template === "guide-delivery") {
     // 1. Notify owner
     await send(OWNER_EMAIL, `New guide request from ${templateData.email}`, ownerLeadHtml(templateData));
