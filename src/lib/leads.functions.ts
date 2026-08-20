@@ -13,20 +13,6 @@ export const saveLead = createServerFn({ method: "POST" })
   .inputValidator((input: unknown) => LeadSchema.parse(input))
   .handler(async ({ data }) => {
     try {
-      const { supabaseAdmin } = await import(
-        "@/integrations/supabase/client.server"
-      );
-      await supabaseAdmin.from("leads").insert({
-        email: data.email,
-        name: data.name || null,
-        source: data.source,
-        score: data.score ?? null,
-      });
-    } catch (err) {
-      console.error("[saveLead] db insert failed", err);
-    }
-
-    try {
       await sendTemplateEmail("guide-request", "", {
         templateData: {
           name: data.name || "New lead",

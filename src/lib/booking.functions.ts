@@ -14,21 +14,6 @@ export const sendBookingEmail = createServerFn({ method: "POST" })
   .inputValidator((input: unknown) => BookingSchema.parse(input))
   .handler(async ({ data }) => {
     try {
-      const { supabaseAdmin } = await import(
-        "@/integrations/supabase/client.server"
-      );
-      await supabaseAdmin.from("bookings").insert({
-        name: data.name,
-        email: data.email,
-        phone: data.phone || null,
-        best_time: data.bestTime || null,
-        message: data.message || null,
-      });
-    } catch (err) {
-      console.error("[sendBookingEmail] db insert failed", err);
-    }
-
-    try {
       const result = await sendTemplateEmail("booking-request", "", {
         templateData: data,
         replyTo: data.email,
