@@ -32,7 +32,7 @@ export const saveLead = createServerFn({ method: "POST" })
       );
       if (mod?.sendTemplateEmail) {
         // 1) Notify the team that a lead requested the guide
-        await mod.sendTemplateEmail("booking-request", "info@downpaymentpro.ca", {
+        await mod.sendTemplateEmail("booking-request", "", {
           templateData: {
             name: data.name || "New lead",
             email: data.email,
@@ -48,7 +48,7 @@ export const saveLead = createServerFn({ method: "POST" })
         if (data.source === "guide") {
           await mod.sendTemplateEmail("guide-delivery", data.email, {
             templateData: { name: data.name || "there" },
-            replyTo: "info@downpaymentpro.ca",
+            replyTo: process.env.RESEND_TO_EMAIL || "Downpaymentpro@gmail.com",
             idempotencyKey: `guide-${data.email}`,
           });
         }
