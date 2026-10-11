@@ -64,6 +64,7 @@ function Index() {
   }, [price, savings, monthly]);
 
   const [form, setForm] = useState({
+    role: "",
     name: "",
     email: "",
     phone: "",
@@ -83,7 +84,7 @@ function Index() {
       const res = await send({ data: form });
       if (res?.ok) {
         toast.success("Thanks! We'll be in touch shortly.");
-        setForm({ name: "", email: "", phone: "", bestTime: "", message: "" });
+        setForm({ role: "", name: "", email: "", phone: "", bestTime: "", message: "" });
       } else {
         toast.error("Something went wrong. Please try again.");
       }
@@ -114,11 +115,10 @@ function Index() {
           <div className="links">
             <a href="#how">How it works</a>
             <a href="#pillars">Program</a>
+            <a href="#score">Readiness Score</a>
             <a href="#calculator">Calculator</a>
-            <a href="#score">Score</a>
-            <a href="#stories">Stories</a>
-            <a href="#guide">Free guide</a>
             <a href="#faq">FAQ</a>
+            <a href="#partners">Realtors and Mortgage Agents</a>
           </div>
           <a href="#book" className="btn green">Book a Session</a>
         </nav>
@@ -131,7 +131,8 @@ function Index() {
             <h1>Get home faster.</h1>
             <p className="lead">
               A premium first-time home buyer program that helps you build your down payment
-              through education, planning, government programs, and expert guidance.
+              through education, planning, government programs, and expert guidance. We currently
+              serve clients in Ontario, British Columbia, and New Brunswick.
             </p>
             <div className="actions">
               <a href="#book" className="btn">Start your free plan</a>
@@ -273,7 +274,7 @@ function Index() {
               <div className="hp-bar">
                 <i style={{ width: `${Math.max(8, Math.min(100, 100 - parseFloat(heroYears) * 14 || 70))}%` }} />
               </div>
-              <span className="hp-note">Based on your custom savings plan below.</span>
+              <span className="hp-note">Estimated with your custom savings plan.</span>
             </div>
 
             <button
@@ -306,8 +307,8 @@ function Index() {
               {[
                 ["1", "Free strategy session", "We learn about your goals, timeline, savings, and current financial picture."],
                 ["2", "Review & analyze", "We review your available programs, savings options, and planning gaps."],
-                ["3", "Build your roadmap", "You receive a personalized plan designed to grow your down payment."],
-                ["4", "Monitor & adjust", "We monitor your progress for 90 days and adjust the plan as needed."],
+                ["3", "Set up your accounts and execute roadmap", "Once you're ready to move forward, we handle the account-opening process, set up your contribution plan, and guide you through every step."],
+                ["4", "Service, monitor & adjust", "We continue servicing your accounts, monitor your progress, and recommend adjustments as your goals or circumstances change."],
               ].map(([n, h, p], i) => (
                 <Reveal as="article" className="step" key={n} delay={i * 80}>
                   <span className="step-no">{n}</span>
@@ -368,30 +369,13 @@ function Index() {
         </section>
 
         <section className="section dark" id="score">
-          <div className="wrap center">
-            <Reveal>
-              <p className="eyebrow">Signature feature</p>
-              <h2>Your roadmap starts with a score.</h2>
-              <p className="sub">
-                Answer six quick questions and get your personal Down Payment Readiness
-                Score plus a checklist of the exact next steps for your situation.
-              </p>
-            </Reveal>
-            <Reveal delay={120}>
-              <ReadinessQuiz />
-            </Reveal>
-          </div>
+          <Reveal delay={120}>
+            <ReadinessQuiz />
+          </Reveal>
         </section>
 
         <section className="section" id="stories">
           <div className="wrap center">
-            <Reveal>
-              <p className="eyebrow">Real clients</p>
-              <h2>From "someday" to keys in hand.</h2>
-              <p className="sub">
-                Every plan is different — these are the shifts our clients made across Ontario.
-              </p>
-            </Reveal>
             <Testimonials />
           </div>
         </section>
@@ -411,17 +395,55 @@ function Index() {
             <div className="faq">
               <details open>
                 <summary>Who is this for?</summary>
-                <p className="muted">First-time buyers who want a clear plan to become down payment ready within the next 1 to 5 years.</p>
+                <p className="muted">Anyone who wants a clear plan to become down payment ready within the next 3 months to 5 years.</p>
               </details>
               <details>
                 <summary>Is this a mortgage service?</summary>
-                <p className="muted">It is a planning and education program that helps you prepare before applying for a mortgage.</p>
+                <p className="muted">It is a planning and education program that helps you prepare before applying for a mortgage. We will also coordinate your down payment strategy with your financing requirements.</p>
               </details>
               <details>
                 <summary>What programs do you review?</summary>
                 <p className="muted">We review FHSA, RRSP Home Buyers' Plan, savings strategies, and available government benefits where appropriate.</p>
               </details>
             </div>
+          </div>
+        </section>
+
+        <section className="section partner-section" id="partners">
+          <div className="wrap">
+            <Reveal>
+              <div className="partner-intro">
+                <p className="eyebrow">For Realtors and Mortgage Agents</p>
+                <h2>Turn future buyers into prepared buyers.</h2>
+                <p className="sub">
+                  Not every prospect is ready to purchase today. Downpayment Pro gives your clients a structured
+                  path to build their down payment, use available programs, and prepare for financing — while
+                  helping you stay connected until they are ready to move.
+                </p>
+              </div>
+            </Reveal>
+            <div className="partner-benefits">
+              {[
+                ["01", "Keep promising leads moving", "Give clients who are not ready today a clear plan instead of losing touch with them."],
+                ["02", "Build better-prepared buyers", "Help clients understand savings targets, FHSA and RRSP opportunities, and financing requirements."],
+                ["03", "Strengthen client relationships", "Offer ongoing education, encouragement, and accountability throughout their journey."],
+              ].map(([n, h, p], i) => (
+                <Reveal as="article" key={n} delay={i * 80}>
+                  <span>{n}</span>
+                  <h3>{h}</h3>
+                  <p>{p}</p>
+                </Reveal>
+              ))}
+            </div>
+            <Reveal>
+              <div className="partner-cta">
+                <div>
+                  <h3>Let's help more renters become homeowners.</h3>
+                  <p>Connect with us to learn how Downpayment Pro can support your clients and grow your referral pipeline.</p>
+                </div>
+                <a className="btn green" href="#book">Learn About Partnering</a>
+              </div>
+            </Reveal>
           </div>
         </section>
 
@@ -435,13 +457,21 @@ function Index() {
                 session and discover how we can help you reach your down payment goals faster.
               </p>
               <div className="contact">
-                <span>☎ (416) 786-1774</span>
-                <span>✉ Downpaymentpro@gmail.com</span>
-                <span>📍 Serving families across Ontario</span>
+                <span>☎ <a href="tel:+16474703088">647-470-3088</a></span>
+                <span>✉ <a href="mailto:info@downpaymentpro.ca">info@downpaymentpro.ca</a></span>
+                <span>📍 Serving families across Ontario, British Columbia and New Brunswick</span>
               </div>
             </div>
             <form className="form" onSubmit={onSubmit}>
               <h3>Book your session</h3>
+              <label>I am a
+                <select required value={form.role} onChange={(e) => setForm({ ...form, role: e.target.value })}>
+                  <option value="">Select an option</option>
+                  <option>Client</option>
+                  <option>Realtor</option>
+                  <option>Mortgage Agent</option>
+                </select>
+              </label>
               <label>Full Name
                 <input required placeholder="Your full name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
               </label>
@@ -449,7 +479,7 @@ function Index() {
                 <input required type="email" placeholder="Your email address" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
               </label>
               <label>Phone
-                <input placeholder="Your phone number" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} />
+                <input required type="tel" placeholder="Your phone number" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} />
               </label>
               <label>Best time to contact
                 <select value={form.bestTime} onChange={(e) => setForm({ ...form, bestTime: e.target.value })}>
@@ -562,7 +592,7 @@ nav{height:78px;display:flex;align-items:center;gap:28px}
 .faq summary{font-size:20px;font-weight:900;cursor:pointer}
 .footer{background:var(--navy);color:white;padding:34px 0}
 .footer .wrap{display:flex;justify-content:space-between;gap:20px}
-@media(max-width:980px){.links{display:none}.hero,.split,.book{grid-template-columns:1fr}.visual{height:520px}.steps{grid-template-columns:1fr 1fr}.pillars{grid-template-columns:1fr 1fr}.points{grid-template-columns:1fr}}
+@media(max-width:980px){.links{display:none}.hero,.split,.book{grid-template-columns:1fr}.visual{height:520px}.steps{grid-template-columns:1fr 1fr}.pillars{grid-template-columns:1fr 1fr}.points{grid-template-columns:1fr}.assessment-grid{grid-template-columns:1fr}.partner-benefits{grid-template-columns:1fr}.partner-cta{flex-direction:column;align-items:flex-start}.testimonials{grid-template-columns:1fr}}
 @media(max-width:560px){.hero h1{font-size:58px}.steps,.pillars,.results{grid-template-columns:1fr}.footer .wrap{display:grid}}
 
 /* --- reveal on scroll --- */
@@ -607,19 +637,39 @@ nav{height:78px;display:flex;align-items:center;gap:28px}
 .quiz-email input{flex:1 1 180px;border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.08);color:white;border-radius:14px;padding:14px;font:inherit}
 .quiz-email input::placeholder{color:#c6d2e8}
 .quiz-sent{color:#91e47a;font-weight:850}
-/* --- stories --- */
-.stories{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:52px;text-align:left}
-.story{background:white;border:1px solid var(--line);border-radius:30px;padding:30px;box-shadow:0 14px 40px rgba(7,27,77,.06)}
-.story-head{display:flex;gap:14px;align-items:center}
-.avatar{width:52px;height:52px;border-radius:50%;display:grid;place-items:center;background:#edf7ea;color:var(--green);font-weight:900;font-size:14px}
-.story-head b{display:block;letter-spacing:-.02em}
-.story-head small{color:var(--muted);font-weight:700}
-.story-shift{display:flex;align-items:center;gap:12px;margin:22px 0}
-.was{color:var(--muted);text-decoration:line-through;font-weight:850}
-.arrow{color:var(--green);font-weight:900}
-.now{color:var(--navy);font-weight:900;font-size:24px;letter-spacing:-.03em}
-.story p{color:#344360;line-height:1.65;margin:0 0 18px}
-.story-stat{display:inline-block;background:#edf7ea;color:#2c6a1c;border-radius:999px;padding:8px 14px;font-size:12px;font-weight:900}
+/* --- testimonials --- */
+.testimonials{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:52px;text-align:left}
+.quote{background:white;border:1px solid var(--line);border-radius:30px;padding:30px 34px;box-shadow:0 14px 40px rgba(7,27,77,.06)}
+.quote h2{font-size:clamp(20px,2.4vw,28px);line-height:1.4;letter-spacing:-.02em;margin:0 0 18px;font-weight:700}
+.testimonial-author{color:var(--muted);font-weight:700;margin:0}
+/* --- assessment panel --- */
+.assessment-panel{margin-top:36px;padding:36px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);border-radius:30px}
+.assessment-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:28px}
+.assessment-grid label{display:flex;flex-direction:column;font-size:14px;font-weight:850;color:white;gap:8px}
+.assessment-grid select{border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.08);color:white;border-radius:14px;padding:14px;font:inherit;font-size:14px}
+.assessment-grid select option{background:#071b4d}
+.assessment-submit{margin-top:4px}
+.assessment-result{text-align:center;color:white}
+.assessment-result h3{font-size:28px;margin:8px 0 12px;letter-spacing:-.03em}
+.assessment-result h4{margin:24px 0 12px;font-size:18px}
+.assessment-result ol{text-align:left;display:grid;gap:10px;padding-left:20px;color:#d7dfef;line-height:1.6}
+.assessment-result .btn{margin:24px 0 16px}
+.assessment-note{font-size:13px;opacity:.7;margin:0}
+/* --- partner section --- */
+.partner-intro{max-width:780px;margin:0 auto 52px;text-align:center}
+.partner-intro h2{font-size:clamp(40px,5vw,76px);line-height:.95;letter-spacing:-.055em;margin:0 0 18px}
+.partner-intro p.sub{font-size:21px;color:var(--muted);line-height:1.5}
+.partner-benefits{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-bottom:40px}
+.partner-benefits article{background:white;border:1px solid var(--line);border-radius:30px;padding:30px;box-shadow:0 14px 40px rgba(7,27,77,.06)}
+.partner-benefits span{display:inline-block;font-size:12px;font-weight:900;color:var(--muted);letter-spacing:.08em;margin-bottom:14px}
+.partner-benefits h3{margin:0 0 10px;font-size:21px;letter-spacing:-.03em}
+.partner-benefits p{color:var(--muted);line-height:1.6;margin:0}
+.partner-cta{display:flex;align-items:center;justify-content:space-between;gap:32px;background:var(--light);border:1px solid var(--line);border-radius:30px;padding:36px 40px}
+.partner-cta h3{margin:0 0 8px;font-size:26px;letter-spacing:-.03em}
+.partner-cta p{color:var(--muted);margin:0;line-height:1.5}
+.partner-cta .btn{white-space:nowrap;flex-shrink:0}
+/* --- form note --- */
+.form-note{font-size:12px;color:var(--muted);text-align:center;margin:4px 0 0}
 /* --- lead magnet --- */
 .magnet{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center}
 .magnet h2{font-size:clamp(34px,4vw,60px);line-height:1;letter-spacing:-.05em;margin:0 0 16px}
@@ -640,5 +690,5 @@ nav{height:78px;display:flex;align-items:center;gap:28px}
 .magnet-locked ul{list-style:none;padding:0;margin:0;display:grid;gap:10px}
 .magnet-locked li{padding-left:26px;position:relative;opacity:.92}
 .magnet-locked li:before{content:"";position:absolute;left:0;top:7px;width:12px;height:12px;border-radius:50%;background:var(--green)}
-@media(max-width:980px){.quiz,.stories,.magnet{grid-template-columns:1fr}.hint{display:none}}
+@media(max-width:980px){.quiz,.magnet{grid-template-columns:1fr}.hint{display:none}}
 `;

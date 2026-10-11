@@ -1,241 +1,237 @@
-import { useMemo, useState } from "react";
-import { useServerFn } from "@tanstack/react-start";
-import { toast } from "sonner";
-import { saveLead } from "@/lib/leads.functions";
+import { useState } from "react";
+
+type QuizState = "idle" | "open" | "result";
 
 type Answers = {
-  income: number;
   savings: number;
-  monthly: number;
-  debt: number;
-  region: string;
+  consistency: number;
   timeline: number;
+  accounts: number;
+  credit: number;
+  financing: number;
 };
 
-const initial: Answers = {
-  income: 95000,
-  savings: 30000,
-  monthly: 1200,
-  debt: 400,
-  region: "gta",
-  timeline: 3,
-};
-
-const regionTarget: Record<string, number> = {
-  gta: 60000,
-  hamilton: 45000,
-  ottawa: 45000,
-  other: 35000,
-};
-
-const regionLabels: [string, string][] = [
-  ["gta", "GTA"],
-  ["hamilton", "Hamilton / Niagara"],
-  ["ottawa", "Ottawa"],
-  ["other", "Other Ontario"],
+const QUESTIONS: {
+  name: keyof Answers;
+  label: string;
+  options: { label: string; value: number }[];
+}[] = [
+  {
+    name: "savings",
+    label: "1. How much of your target down payment have you saved?",
+    options: [
+      { label: "Choose one", value: -1 },
+      { label: "20% or more", value: 30 },
+      { label: "10%–19%", value: 22 },
+      { label: "5%–9%", value: 14 },
+      { label: "Less than 5%", value: 6 },
+      { label: "I'm not sure", value: 0 },
+    ],
+  },
+  {
+    name: "consistency",
+    label: "2. How consistently are you saving?",
+    options: [
+      { label: "Choose one", value: -1 },
+      { label: "Every month or payday", value: 20 },
+      { label: "Most months", value: 15 },
+      { label: "Occasionally", value: 8 },
+      { label: "I have not started", value: 0 },
+    ],
+  },
+  {
+    name: "timeline",
+    label: "3. Are your savings on track for your preferred timeline?",
+    options: [
+      { label: "Choose one", value: -1 },
+      { label: "Yes, I'm on track", value: 15 },
+      { label: "I'm close", value: 10 },
+      { label: "I'm behind", value: 5 },
+      { label: "I'm not sure", value: 0 },
+    ],
+  },
+  {
+    name: "accounts",
+    label: "4. Have you reviewed FHSA and RRSP opportunities?",
+    options: [
+      { label: "Choose one", value: -1 },
+      { label: "Yes, and I'm contributing", value: 15 },
+      { label: "My account is open", value: 10 },
+      { label: "I have researched them", value: 5 },
+      { label: "Not yet", value: 0 },
+    ],
+  },
+  {
+    name: "credit",
+    label: "5. Have you reviewed your credit and debts?",
+    options: [
+      { label: "Choose one", value: -1 },
+      { label: "Yes, and I'm comfortable", value: 10 },
+      { label: "Yes, but I need a plan", value: 7 },
+      { label: "I know my credit score only", value: 3 },
+      { label: "Not yet", value: 0 },
+    ],
+  },
+  {
+    name: "financing",
+    label: "6. Have you discussed mortgage financing requirements?",
+    options: [
+      { label: "Choose one", value: -1 },
+      { label: "Yes, with a mortgage professional", value: 10 },
+      { label: "I have an appointment planned", value: 7 },
+      { label: "I have a general idea", value: 3 },
+      { label: "Not yet", value: 0 },
+    ],
+  },
 ];
 
+const PRIORITIES: { key: keyof Answers; max: number; text: string }[] = [
+  { key: "savings", max: 30, text: "Confirm your full down payment target and measure the gap." },
+  { key: "consistency", max: 20, text: "Set up a realistic automatic monthly savings amount." },
+  { key: "timeline", max: 15, text: "Compare your savings pace with your preferred purchase date." },
+  { key: "accounts", max: 15, text: "Review how FHSA and RRSP strategies may support your goal." },
+  { key: "credit", max: 10, text: "Review your credit and create a plan for outstanding debts." },
+  { key: "financing", max: 10, text: "Coordinate your down payment with mortgage financing requirements." },
+];
+
+function getBand(score: number) {
+  if (score >= 80) return "Almost purchase-ready";
+  if (score >= 60) return "On the right track";
+  if (score >= 40) return "Important gaps to address";
+  return "Build your foundation first";
+}
+
+function getExplanation(score: number) {
+  if (score >= 80)
+    return "You have strong habits and preparation. Confirm the final numbers and financing details before you shop.";
+  if (score >= 60)
+    return "You have a solid start. Closing a few planning gaps could improve your confidence and timeline.";
+  if (score >= 40)
+    return "You have started, but several areas need attention before you will be ready to purchase.";
+  return "Start with a clear savings target, a consistent monthly plan, and professional guidance.";
+}
+
 export function ReadinessQuiz() {
-  const send = useServerFn(saveLead);
-  const [a, setA] = useState(initial);
-  const [email, setEmail] = useState("");
-  const [sent, setSent] = useState(false);
-  const [busy, setBusy] = useState(false);
+  const [state, setState] = useState<QuizState>("idle");
+  const [answers, setAnswers] = useState<Partial<Answers>>({});
+  const [result, setResult] = useState<{
+    score: number;
+    band: string;
+    explanation: string;
+    priorities: string[];
+  } | null>(null);
 
-  const { score, checklist } = useMemo(() => {
-    const target = regionTarget[a.region] ?? 40000;
-
-    const savingsRatio = Math.min(1, a.savings / target);
-    const savingsPts = savingsRatio * 35;
-
-    const needed = Math.max(0, target - a.savings);
-    const monthsNeeded = a.monthly > 0 ? needed / a.monthly : 999;
-    const paceRatio = Math.min(1, (a.timeline * 12) / Math.max(1, monthsNeeded));
-    const pacePts = paceRatio * 25;
-
-    const dtiMonthly = a.income / 12;
-    const dti = dtiMonthly > 0 ? a.debt / dtiMonthly : 1;
-    const debtPts = Math.max(0, 1 - dti / 0.2) * 20;
-
-    const rate = dtiMonthly > 0 ? a.monthly / dtiMonthly : 0;
-    const savePts = Math.min(1, rate / 0.2) * 20;
-
-    const total = Math.max(
-      12,
-      Math.min(99, Math.round(savingsPts + pacePts + debtPts + savePts)),
-    );
-
-    const list: { ok: boolean; text: string }[] = [
-      {
-        ok: savingsRatio >= 0.6,
-        text:
-          savingsRatio >= 0.6
-            ? "Your savings already cover most of a typical down payment in your area."
-            : `Build your savings toward roughly ${fmt(target)} for your region.`,
-      },
-      {
-        ok: paceRatio >= 0.95,
-        text:
-          paceRatio >= 0.95
-            ? `Your pace fits your ${a.timeline}-year timeline.`
-            : `At ${fmt(a.monthly)}/month you need about ${Math.ceil(monthsNeeded / 12)} years — let's shorten it.`,
-      },
-      {
-        ok: dti <= 0.12,
-        text:
-          dti <= 0.12
-            ? "Your debt payments leave healthy room for a mortgage."
-            : "Reduce monthly debt payments — they cut directly into your approval amount.",
-      },
-      {
-        ok: rate >= 0.15,
-        text:
-          rate >= 0.15
-            ? "Your savings rate is strong relative to your income."
-            : "Automate a higher monthly transfer — even +$250 moves your date up.",
-      },
-      {
-        ok: false,
-        text: "Open an FHSA and check RRSP Home Buyers' Plan eligibility.",
-      },
-    ];
-
-    return { score: total, checklist: list };
-  }, [a]);
-
-  async function onSend(e: React.FormEvent) {
+  function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!email.trim()) {
-      toast.error("Please enter your email.");
-      return;
-    }
-    setBusy(true);
-    try {
-      await send({ data: { email, source: "score" as const, score } });
-      setSent(true);
-      toast.success("Sent! Your score summary is on the way.");
-    } catch {
-      toast.error("Something went wrong. Please try again.");
-    } finally {
-      setBusy(false);
-    }
+    const vals = answers as Answers;
+    const score = Object.values(vals).reduce((t, v) => t + v, 0);
+    const band = getBand(score);
+    const explanation = getExplanation(score);
+    const priorities = PRIORITIES.sort(
+      (a, b) => b.max - (vals[b.key] ?? 0) - (a.max - (vals[a.key] ?? 0)),
+    )
+      .slice(0, 3)
+      .map((p) => p.text);
+    setResult({ score, band, explanation, priorities });
+    setState("result");
   }
 
   return (
-    <div className="quiz">
-      <div className="quiz-form">
-        <label>
-          Household income <output>{fmt(a.income)}</output>
-        </label>
-        <input
-          type="range"
-          min={40000}
-          max={300000}
-          step={5000}
-          value={a.income}
-          onChange={(e) => setA({ ...a, income: +e.target.value })}
-        />
-        <label>
-          Current savings <output>{fmt(a.savings)}</output>
-        </label>
-        <input
-          type="range"
-          min={0}
-          max={200000}
-          step={2500}
-          value={a.savings}
-          onChange={(e) => setA({ ...a, savings: +e.target.value })}
-        />
-        <label>
-          Monthly savings <output>{fmt(a.monthly)}</output>
-        </label>
-        <input
-          type="range"
-          min={0}
-          max={6000}
-          step={100}
-          value={a.monthly}
-          onChange={(e) => setA({ ...a, monthly: +e.target.value })}
-        />
-        <label>
-          Monthly debt payments <output>{fmt(a.debt)}</output>
-        </label>
-        <input
-          type="range"
-          min={0}
-          max={4000}
-          step={50}
-          value={a.debt}
-          onChange={(e) => setA({ ...a, debt: +e.target.value })}
-        />
-        <label>
-          Buying timeline <output>{a.timeline} yrs</output>
-        </label>
-        <input
-          type="range"
-          min={1}
-          max={7}
-          step={1}
-          value={a.timeline}
-          onChange={(e) => setA({ ...a, timeline: +e.target.value })}
-        />
-        <span className="quiz-label">Region</span>
-        <div className="chips">
-          {regionLabels.map(([value, label]) => (
-            <button
-              key={value}
-              type="button"
-              className={`chip ${a.region === value ? "on" : ""}`}
-              onClick={() => setA({ ...a, region: value })}
-            >
-              {label}
-            </button>
-          ))}
+    <>
+      <div className="wrap split" style={{ marginTop: 0 }}>
+        <div className="score">
+          <div
+            className="ring"
+            style={
+              result
+                ? { background: `conic-gradient(#54a83f ${result.score}%,rgba(255,255,255,.18) 0)` }
+                : undefined
+            }
+          >
+            <b>{result ? result.score : "—"}</b>
+          </div>
+          <h3>Down Payment Readiness Score</h3>
+          <p>{result ? `${result.score}/100 — ${result.band}` : "Answer six quick questions to see how prepared you are and where to focus next."}</p>
+        </div>
+        <div>
+          <p className="eyebrow">One-minute assessment</p>
+          <h2>Your roadmap starts with a score.</h2>
+          <ul className="check">
+            <li>Identify savings gaps</li>
+            <li>Review FHSA and RRSP opportunities</li>
+            <li>Check financing preparation</li>
+            <li>Get three clear next steps</li>
+          </ul>
+          <button
+            className="btn green"
+            type="button"
+            onClick={() => setState(state === "open" ? "idle" : "open")}
+          >
+            {state === "open" ? "Hide Assessment" : "Check My Readiness"}
+          </button>
         </div>
       </div>
 
-      <div className="quiz-result">
-        <div
-          className="ring live"
-          style={{ ["--pct" as any]: `${score}%` }}
-          aria-label={`Readiness score ${score} out of 100`}
-        >
-          <b>{score}</b>
+      {state !== "idle" && (
+        <div className="wrap assessment-panel">
+          {state === "open" && (
+            <form
+              onSubmit={handleSubmit}
+              onReset={() => {
+                setAnswers({});
+                setState("open");
+                setResult(null);
+              }}
+            >
+              <div className="assessment-grid">
+                {QUESTIONS.map((q) => (
+                  <label key={q.name}>
+                    {q.label}
+                    <select
+                      required
+                      value={answers[q.name] ?? ""}
+                      onChange={(e) =>
+                        setAnswers({ ...answers, [q.name]: Number(e.target.value) })
+                      }
+                    >
+                      {q.options.map((opt) => (
+                        <option
+                          key={opt.label}
+                          value={opt.value === -1 ? "" : opt.value}
+                          disabled={opt.value === -1}
+                        >
+                          {opt.label}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                ))}
+              </div>
+              <button className="btn green assessment-submit" type="submit">
+                Calculate My Score
+              </button>
+            </form>
+          )}
+
+          {state === "result" && result && (
+            <div className="assessment-result">
+              <p className="eyebrow">Your result</p>
+              <h3>{result.score}/100 — {result.band}</h3>
+              <p>{result.explanation}</p>
+              <h4>Your three priorities</h4>
+              <ol>
+                {result.priorities.map((p) => (
+                  <li key={p}>{p}</li>
+                ))}
+              </ol>
+              <a href="#book" className="btn">Build My Personalized Plan</a>
+              <p className="assessment-note">
+                This score is a planning estimate, not a mortgage approval or guarantee.
+              </p>
+            </div>
+          )}
         </div>
-        <h3>Your readiness score</h3>
-        <ul className="check live-check">
-          {checklist.map((item) => (
-            <li key={item.text} className={item.ok ? "ok" : "todo"}>
-              {item.text}
-            </li>
-          ))}
-        </ul>
-        {sent ? (
-          <p className="quiz-sent">
-            ✓ Your score summary is on the way. We'll follow up with next steps.
-          </p>
-        ) : (
-          <form className="quiz-email" onSubmit={onSend}>
-            <input
-              type="email"
-              required
-              placeholder="Email me my score & checklist"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <button className="btn green" type="submit" disabled={busy}>
-              {busy ? "Sending..." : "Send it"}
-            </button>
-          </form>
-        )}
-      </div>
-    </div>
+      )}
+    </>
   );
 }
-
-const fmt = (n: number) =>
-  new Intl.NumberFormat("en-CA", {
-    style: "currency",
-    currency: "CAD",
-    maximumFractionDigits: 0,
-  }).format(n);

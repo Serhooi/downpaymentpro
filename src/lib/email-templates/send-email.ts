@@ -2,7 +2,7 @@ import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-const OWNER_EMAIL = process.env.RESEND_TO_EMAIL || "Downpaymentpro@gmail.com";
+const OWNER_EMAIL = process.env.RESEND_TO_EMAIL || "info@downpaymentpro.ca";
 const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || "onboarding@resend.dev";
 const SITE_URL = process.env.VITE_SITE_URL || "https://www.downpaymentpro.ca";
 

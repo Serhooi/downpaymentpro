@@ -3,6 +3,7 @@ import { z } from "zod";
 import { sendTemplateEmail } from "@/lib/email-templates/send-email";
 
 const BookingSchema = z.object({
+  role: z.string().trim().max(40).optional().default(""),
   name: z.string().trim().min(1).max(120),
   email: z.string().trim().email().max(255),
   phone: z.string().trim().max(60).optional().default(""),
